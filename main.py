@@ -1,5 +1,8 @@
+import config
 import pygame
+import player
 from pygame.locals import *
+
 
 pygame.init()
 
@@ -7,11 +10,13 @@ pygame.init()
 class Game:
 	def __init__(self):
 		pygame.display.set_caption("Ping Pong Online")
-		self.size = (1000, 500)
+		self.size = config.SCREEN_SIZE
 		self.screen = pygame.display.set_mode(self.size)
 		self.timer = pygame.time.Clock()
 		self.all_objects = pygame.sprite.Group()
 		self.is_running = True
+		self.main_paddle = player.Player(3, config.SCREEN_SIZE[1]/2)
+		self.all_objects.add(self.main_paddle)
 
 
 	def event(self):
@@ -19,9 +24,22 @@ class Game:
 			if e.type == QUIT:
 				self.is_running = False
 
+			if e.type == KEYDOWN:
+				if e.key in [K_UP, K_w]:
+					self.main_paddle.up = True
+				if e.key in [K_DOWN, K_s]:
+					self.main_paddle.down = True
+
+			if e.type == KEYUP:
+				if e.key in [K_UP, K_w]:
+					self.main_paddle.up = False
+				if e.key in [K_DOWN, K_s]:
+					self.main_paddle.down = False
+
 
 	def draw(self):
 		self.screen.fill((0, 0, 0))
+		self.main_paddle.update()
 		self.all_objects.draw(self.screen)
 		self.timer.tick(60)
 		pygame.display.update()

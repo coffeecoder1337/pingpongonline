@@ -1,0 +1,4 @@
+SCREEN_SIZE = (1000, 500)
+PADDLE_SIZE = (5, 100)
+
+

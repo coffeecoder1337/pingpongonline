@@ -6,6 +6,7 @@ from pygame.locals import *
 class Player(pygame.sprite.Sprite):
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
+		self.start_position = (x, y)
 		self.size = config.PADDLE_SIZE
 		self.image = pygame.Surface(self.size)
 		self.image.fill((255, 255, 255))
@@ -22,6 +23,10 @@ class Player(pygame.sprite.Sprite):
 			self.down = False
 		if self.rect.top < 0:
 			self.up = False
+
+
+	def respawn(self):
+		self.rect.x, self.rect.y = self.start_position
 
 
 	def update(self):

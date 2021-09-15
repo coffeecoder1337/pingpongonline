@@ -14,11 +14,14 @@ class Game:
 		self.size = config.SCREEN_SIZE
 		self.screen = pygame.display.set_mode(self.size)
 		self.timer = pygame.time.Clock()
-		self.all_objects = pygame.sprite.Group()
 		self.is_running = True
+		self.score = [0, 0]
+
+		self.all_objects = pygame.sprite.Group()
 		self.main_paddle = player.Player(3, config.SCREEN_SIZE[1]/2)
 		self.second_paddle = player.AI_Player(config.SCREEN_SIZE[0] - 3 - config.PADDLE_SIZE[0], config.SCREEN_SIZE[1]/2)
 		self.ball = ball.Ball(config.SCREEN_SIZE[0]/2, config.SCREEN_SIZE[1]/2)
+
 		self.all_objects.add(self.main_paddle)
 		self.all_objects.add(self.second_paddle)
 		self.all_objects.add(self.ball)
@@ -41,12 +44,29 @@ class Game:
 				if e.key in [K_DOWN, K_s]:
 					self.main_paddle.down = False
 
+	def check_win(self):
+		if self.ball.rect.left < 0:
+			self.score[1] += 1
+			print(self.score)
+			self.respawn()
+		if self.ball.rect.right > self.screen.get_rect().right:
+			self.score[0] += 1
+			print(self.score)
+			self.respawn()
+
+
+	def respawn(self):
+		self.main_paddle.respawn()
+		self.second_paddle.respawn()
+		self.ball.respawn()
+
 
 	def draw(self):
 		self.screen.fill((0, 0, 0))
 		self.main_paddle.update()
 		self.ball.update([self.main_paddle, self.second_paddle])
 		self.second_paddle.move(self.ball)
+		self.check_win()
 		self.all_objects.draw(self.screen)
 		self.timer.tick(60)
 		pygame.display.update()

@@ -7,6 +7,7 @@ from pygame.locals import *
 class Ball(pygame.sprite.Sprite):
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
+		self.start_position = (x, y)
 		self.size = config.BALL_SIZE
 		self.image = pygame.Surface(self.size)
 		self.image.fill((255, 255, 255))
@@ -16,6 +17,10 @@ class Ball(pygame.sprite.Sprite):
 		self.basespeed = 5
 		self.speed = self.basespeed
 		self.direction = [choice([-1, 1]), choice([-1, 1])]
+
+
+	def respawn(self):
+		self.rect.x, self.rect.y = self.start_position
 
 
 	def check_collide(self, players):

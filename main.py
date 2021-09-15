@@ -6,6 +6,7 @@ from pygame.locals import *
 
 
 pygame.init()
+pygame.font.init()
 
 
 class Game:
@@ -16,6 +17,8 @@ class Game:
 		self.timer = pygame.time.Clock()
 		self.is_running = True
 		self.score = [0, 0]
+		self.font = pygame.font.SysFont('Arial', 30)
+		
 
 		self.all_objects = pygame.sprite.Group()
 		self.main_paddle = player.Player(3, config.SCREEN_SIZE[1]/2)
@@ -61,12 +64,19 @@ class Game:
 		self.ball.respawn()
 
 
+	def scoreboard(self):
+		self.score_text = self.font.render(f'{self.score[0]} : {self.score[1]}', False, (255, 255, 255))
+		self.score_text_rect = self.score_text.get_rect()
+		self.screen.blit(self.score_text, (self.size[0] / 2 - self.score_text_rect.width / 2, 10))
+
+
 	def draw(self):
 		self.screen.fill((0, 0, 0))
 		self.main_paddle.update()
 		self.ball.update([self.main_paddle, self.second_paddle])
 		self.second_paddle.move(self.ball)
 		self.check_win()
+		self.scoreboard()
 		self.all_objects.draw(self.screen)
 		self.timer.tick(60)
 		pygame.display.update()

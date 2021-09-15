@@ -33,3 +33,13 @@ class Player(pygame.sprite.Sprite):
 			self.rect.y += self.speed
 			self.check_collide()
 
+
+
+class AI_Player(Player):
+	def __init__(self, x, y):
+		Player.__init__(self, x, y)
+
+	def move(self, ball):
+		self.rect.centery = ball.rect.centery
+		self.check_collide()
+

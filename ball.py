@@ -22,8 +22,8 @@ class Ball(pygame.sprite.Sprite):
 		for player in players:
 			if pygame.sprite.collide_rect(player, self):
 				self.direction[0] = -self.direction[0]
-			if any([self.rect.top < 0, self.rect.bottom > config.SCREEN_SIZE[1]]):
-				self.direction[1] = -self.direction[1]
+		if any([self.rect.top < 0, self.rect.bottom > config.SCREEN_SIZE[1]]):
+			self.direction[1] = -self.direction[1]
 
 
 	def update(self, players):

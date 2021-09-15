@@ -1,3 +1,4 @@
+import ball
 import config
 import pygame
 import player
@@ -16,7 +17,9 @@ class Game:
 		self.all_objects = pygame.sprite.Group()
 		self.is_running = True
 		self.main_paddle = player.Player(3, config.SCREEN_SIZE[1]/2)
+		self.ball = ball.Ball(config.SCREEN_SIZE[0]/2, config.SCREEN_SIZE[1]/2)
 		self.all_objects.add(self.main_paddle)
+		self.all_objects.add(self.ball)
 
 
 	def event(self):
@@ -40,6 +43,7 @@ class Game:
 	def draw(self):
 		self.screen.fill((0, 0, 0))
 		self.main_paddle.update()
+		self.ball.update([self.main_paddle])
 		self.all_objects.draw(self.screen)
 		self.timer.tick(60)
 		pygame.display.update()
